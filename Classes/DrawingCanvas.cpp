@@ -150,3 +150,13 @@ void DrawingCanvas::colorChangedPressed(cocos2d::Ref *pSender, cocos2d::ui::Widg
         pressedButton->cocos2d::Node::setScale(1.0f);
     }
 }
+
+bool DrawingCanvas::getNetworkedSession()
+{
+    return this->networkedSession;
+}
+
+void DrawingCanvas::setNetworkedSession(bool networked)
+{
+    this->networkedSession = networked;
+}

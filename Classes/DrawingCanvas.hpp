@@ -16,12 +16,15 @@ class DrawingCanvas : public cocos2d::Node
 {
 public:
     CREATE_FUNC(DrawingCanvas);
+    bool getNetworkedSession();
+    void setNetworkedSession(bool networked);
     
 protected:
     cocos2d::LayerColor* background;
     cocos2d::DrawNode* drawNode;
     cocos2d::Sprite* check;
     cocos2d::Color4F selectedColor;
+    bool networkedSession;
     
     bool init() override;
     void onEnter() override;

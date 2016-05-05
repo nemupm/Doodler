@@ -59,16 +59,14 @@ void Lobby::onEnter()
 void Lobby::soloPressed(Ref *pSender, ui::Widget::TouchEventType eEventType)
 {
     if (eEventType == ui::Widget::TouchEventType::ENDED) {
-        Scene* scene = Scene::create();
-        
-        DrawingCanvas* drawingCanvas = DrawingCanvas::create();
-        scene->addChild(drawingCanvas);
-        
-        Director::getInstance()->pushScene(scene);
+        SceneManager::getInstance()->enterSoloGame();
     }
 }
 
 void Lobby::duoPressed(Ref *pSender, ui::Widget::TouchEventType eEventType)
 {
-    
+    if(eEventType == ui::Widget::TouchEventType::ENDED)
+    {
+        SceneManager::getInstance()->connectAndEnterNetworkedGame();
+    }
 }

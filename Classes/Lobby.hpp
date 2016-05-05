@@ -10,6 +10,7 @@
 #define Lobby_hpp
 
 #include "CocosGUI.h"
+#include "SceneManager.hpp"
 
 class Lobby : public cocos2d::Node{
 public:
