@@ -22,6 +22,7 @@ public:
     void enterSoloGame();
     void returnToLobby();
     void connectAndEnterNetworkedGame();
+    void sendData(const void* data, unsigned long length);
 
 private:
     DrawingCanvas* drawingCanvas;

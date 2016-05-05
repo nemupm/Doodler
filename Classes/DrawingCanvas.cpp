@@ -8,6 +8,8 @@
 
 #include "DrawingCanvas.hpp"
 #include "Constants.h"
+#include "JSONPacker.hpp"
+#include "SceneManager.hpp"
 
 using namespace cocos2d;
 bool DrawingCanvas::init()
@@ -62,6 +64,11 @@ void DrawingCanvas::setupTouchHandling()
         float radius = (alpha * distance) + (1.0f - alpha) * lastRadius;
         
         drawNode->drawSegment(lastTouchPos, touchPos, radius, this->selectedColor);
+        
+        if (this->networkedSession)
+        {
+            this->sendStrokeOverNetwork(lastTouchPos, touchPos, radius, selectedColor);
+        }
         
         lastRadius = radius;
         lastTouchPos = touchPos;
@@ -159,4 +166,23 @@ bool DrawingCanvas::getNetworkedSession()
 void DrawingCanvas::setNetworkedSession(bool networked)
 {
     this->networkedSession = networked;
+}
+
+void DrawingCanvas::receivedData(const void *data, unsigned long length)
+{
+    const char* cstr = reinterpret_cast<const char*>(data);
+    std::string json = std::string(cstr, length);
+    JSONPacker::LineData lineData = JSONPacker::unpackLineDataJSON(json);
+    drawNode->drawSegment(lineData.startPoint, lineData.endPoint, lineData.radius, lineData.color);
+}
+
+void DrawingCanvas::sendStrokeOverNetwork(cocos2d::Vec2 startPoint, cocos2d::Vec2 endPoint, float radius, cocos2d::Color4F color)
+{
+    JSONPacker::LineData lineData;
+    lineData.startPoint = startPoint;
+    lineData.endPoint = endPoint;
+    lineData.radius = radius;
+    lineData.color = color;
+    std::string json = JSONPacker::packLineData(lineData);
+    SceneManager::getInstance()->sendData(json.c_str(), json.length());
 }

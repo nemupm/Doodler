@@ -56,6 +56,11 @@ void SceneManager::connectAndEnterNetworkedGame()
     this->networkingWrapper->attemptToJoinGame();
 }
 
+void SceneManager::sendData(const void *data, unsigned long length)
+{
+    this->networkingWrapper->sendData(data, length);
+}
+
 #pragma mark - private method
 
 void SceneManager::loadDrawingScene(bool networked)
@@ -92,5 +97,8 @@ void SceneManager::stateChanged(ConnectionState state)
 
 void SceneManager::receivedData(const void *data, unsigned long length)
 {
-    
+    if (this->drawingCanvas)
+    {
+        this->drawingCanvas->receivedData(data, length);
+    }
 }
